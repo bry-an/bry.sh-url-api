@@ -1,7 +1,8 @@
-const { nanoid } = require('nanoid')
+const SHA1 = require("crypto-js/sha1");
 
-const generate = (length) => {
-    return nanoid(length)
+const generateSha = (message) => {
+    const sha = SHA1(message).toString()
+    return sha.slice(0, 5)
 }
 
-module.exports = {generate}
+module.exports = {generateSha}
