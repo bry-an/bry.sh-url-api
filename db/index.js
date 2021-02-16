@@ -9,11 +9,16 @@ client.on('error', err => {
     console.log('Error ' + err);
 });
 
-const set = (key, val) => client.set(key, val, (err, reply) => {
-    if (err) throw err;
-    console.log('reply', reply);
-});
-const get = async (key) => {
+const set = (key, val) => {
+    return new Promise((resolve, reject) => {
+        client.set(key, val, (err, reply) => {
+            if (err) reject(err)
+            resolve(reply)
+        });
+    })
+}
+
+const get = (key) => {
     return new Promise((resolve, reject) => {
         client.get(key, (err, res) => {
         if (err) reject(err)
