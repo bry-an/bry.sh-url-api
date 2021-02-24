@@ -67,11 +67,12 @@ app.post('/add/custom', async (req, res) => {
 	const { slug, url } = req.body
 	const dbResponse = await get(slug)
 	if (dbResponse) {
-		res.json({alreadyExists: true, slug, url})
+		const sameUrl = url === dbResponse
+		res.json({alreadyExists: true, slug, url: null, sameUrl})
 	} else {
 		const dbResponse = await set(slug, url)
 		if (dbResponse === 'OK') {
-			res.json({alreadyExists: false, slug, url})
+			res.json({alreadyExists: false, slug, url, sameUrl: null})
 		} else res.status(500).json({error: 'Error saving your hash'})
 	}
 })
