@@ -7,3 +7,22 @@ services:
         volumes:
             - ./redis/config/redis.conf:/redis.conf
         command: [ "redis-server", "/redis.conf" ]
+        networks:
+            - app-network
+    bry.sh:
+        image: node:lts
+        build: ../
+        volumes:
+            - ../:/usr/src/app
+        command: npm start  
+        ports: 
+            - 3001:3001
+        networks:
+            - app-network
+        links:
+            - redis:redis
+
+
+networks:
+    app-network:
+        driver: bridge
