@@ -7,6 +7,7 @@ const cors = require('cors')
 const {generateSha} = require('./utils/generateId.js')
 require('dotenv').config()
 const {get, set} = require('./db/index.js')
+const {isValidSlug} = require('./utils/validSlug.js')
 
 app.use(helmet())
 app.use(morgan('tiny'))
@@ -62,6 +63,9 @@ app.post('/add', async (req, res) => {
 
 app.post('/add/custom', async (req, res) => {
 	const { slug, url } = req.body
+	if (!isValidSlug(slug)) {
+		return res.status(400).json({error: 'Invalid slug'})
+	}
 	const dbResponse = await get(slug)
 	if (dbResponse) {
 		const sameUrl = url === dbResponse
