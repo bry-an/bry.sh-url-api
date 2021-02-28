@@ -7,15 +7,12 @@ const cors = require('cors')
 const {generateSha} = require('./utils/generateId.js')
 require('dotenv').config()
 const {get, set} = require('./db/index.js')
-const path = require('path')
 
 app.use(helmet())
 app.use(morgan('tiny'))
 app.use(bodyParser.json())
 app.use(cors())
 
-
-app.use('/', express.static(path.join(__dirname, '..', 'public')))
 
 app.get('/:slug', async (req, res) => {
 	const {slug} = req.params
